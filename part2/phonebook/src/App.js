@@ -1,12 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Search from './components/Search'
 import Persons from './components/Persons'
 import Input from './components/Input'
+import axios from 'axios'
 
 const App = () => {
-  const [ persons, setPersons ] = useState([
-    { id: 0, name: 'Arto Hellas' }
-  ]) 
+  const [ persons, setPersons ] = useState([]) 
   const [ newName, setNewName ] = useState('')
   const [ newNum, setNewNum ] = useState('')
   const [ newSearch, setNewSearch ] = useState('') 
@@ -43,6 +42,14 @@ const App = () => {
     setNewName('')
     setNewNum('')
   }
+
+  useEffect(() => {
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => setPersons(response.data))
+      console.log(persons)
+    },
+    [])
 
   return (
     <div>
