@@ -4,12 +4,14 @@ import Persons from './components/Persons'
 import Input from './components/Input'
 import axios from 'axios'
 import personService from './services'
+import Notif from './components/Notif'
 
 const App = () => {
   const [ persons, setPersons ] = useState([]) 
   const [ newName, setNewName ] = useState('')
   const [ newNum, setNewNum ] = useState('')
   const [ newSearch, setNewSearch ] = useState('') 
+  const [ message, setMessage ] = useState(null)
 
   const setName = (event) => setNewName(event.target.value)
 
@@ -40,11 +42,17 @@ const App = () => {
         personService
           .update(id, {...personsObject, id: id})
           .then(response => setPersons(persons.map(person => person.id !== id ? person : response)))
+          .catch(error => {
+            setMessage([`Information of ${newName} has already been removed from server`, 1])
+            setTimeout(() => setMessage(null), 5000)
+          })
       }
       return
     }
 
     personService.posts(personsObject).then(response => setPersons(persons.concat(response)))
+    setMessage([`${newName} has been added`, 0])
+    setTimeout(()=> setMessage(null), 5000)
     setNewName('')
     setNewNum('')
   }
@@ -73,6 +81,7 @@ const App = () => {
       <Input submission={submission} newName={newName} setName={setName} newNum={newNum} setNum={setNum}/>
       <br/>
       <h3>Numbers</h3>
+      <Notif message={message}/>
       <Persons persons={persons} newSearch={newSearch} remove={remove}/>
     </div>
   )

@@ -39,7 +39,7 @@ const Weather = ( {country, capital}) => {
         return (
             <div>
                 <h2>Weather in {capital}</h2>
-                <p> temperature: {weather[country].main.temp} </p>
+                <p> temperature: {(weather[country].main.temp-273.15).toFixed(2)} {'\u2103'} </p>
                 <p> wind: {weather[country].wind.speed} </p>
         </div>
         )
