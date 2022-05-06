@@ -47,6 +47,8 @@ const App = () => {
             setTimeout(() => setMessage(null), 5000)
           })
       }
+      setNewName('')
+      setNewNum('')
       return
     }
 
