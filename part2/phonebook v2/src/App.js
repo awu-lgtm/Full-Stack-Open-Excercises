@@ -5,6 +5,7 @@ import Input from './components/Input'
 import axios from 'axios'
 import personService from './services'
 import Notif from './components/Notif'
+import { c } from 'tar'
 
 const App = () => {
   const [ persons, setPersons ] = useState([]) 
@@ -52,7 +53,15 @@ const App = () => {
       return
     }
 
-    personService.posts(personsObject).then(response => setPersons(persons.concat(response)))
+    personService
+      .posts(personsObject)
+      .then(response => {
+        setPersons(persons.concat(response))
+        setMessage([`${newName} has been added`, 0])
+        setTimeout(()=> setMessage(null), 5000)})
+      .catch(error => console.log(error.response.data))
+    
+    
     setMessage([`${newName} has been added`, 0])
     setTimeout(()=> setMessage(null), 5000)
     setNewName('')
